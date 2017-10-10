@@ -1,0 +1,16 @@
+<!--The whole content below can be removed with the new code.-->
+<div style="text-align:center">
+    <h2>@ngrx/store Party Planner</h2>
+</div>
+
+<app-personinput
+  (addPerson)="addPerson($event)">
+</app-personinput>
+
+<app-personlist
+    [people]="people"
+    (addGuest)="addGuest($event)"
+    (removeGuest)="removeGuest($event)"
+    (removePerson)="removePerson($event)"
+    (toggleAttending)="toggleAttending($event)">
+</app-personlist>
