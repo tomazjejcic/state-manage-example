@@ -25,11 +25,20 @@ export class AppComponent {
         /*
             demonstrating use without the async pipe
         */
-        this.subscription = this._store
-            .select('people')
-            .subscribe( people => {
-                this.people = people;
-            });
+        // this.subscription = this._store
+        //     .select('people')
+        //     .subscribe( people => {
+        //         this.people = people;
+        //     });
+
+        /*
+            Observable of people, utilzing the async pipe
+            in our templates this will be subscribed to, with
+            new values being dispayed in our template.
+            Unsubscribe wil be called automatically when component
+            is disposed.
+        */
+        this.people = _store.select('people');
     }
 
     // all state-changing actions get dispatched to and handled by reducers
@@ -55,9 +64,10 @@ export class AppComponent {
 
     /*
       if you do not use async pipe and create manual subscriptions
-      always remember to unsubscribe in ngOnDestroy
+      always remember to unsubscribe in ngOnDestroy, async pipe
+      handles unsubscribe automaticaly
     */
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
+    // ngOnDestroy() {
+    //     this.subscription.unsubscribe();
+    // }
 }
