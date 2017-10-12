@@ -7,9 +7,12 @@ import { Store, StoreModule } from '@ngrx/store';
 import { AppComponent } from './containers/app.component';
 import { PersonlistComponent } from './components/personlist.component';
 import { PersoninputComponent } from './components/personinput.component';
+import { FilterSelect } from './components/filter-select.component';
+import { PartyStats } from './components/party-stats.component';
 
 // Reducers
 import { people } from './reducers/people';
+import { partyFilter } from './reducers/party-filter';
 
 // export const reducers = localStorageSync(['todos']);
 
@@ -17,11 +20,13 @@ import { people } from './reducers/people';
   declarations: [
     AppComponent,
     PersoninputComponent,
-    PersonlistComponent
+    PersonlistComponent,
+    FilterSelect,
+    PartyStats
   ],
   imports: [
     BrowserModule,
-    StoreModule.provideStore({people}),
+    StoreModule.provideStore({people, partyFilter}),
     FormsModule
   ],
   providers: [],

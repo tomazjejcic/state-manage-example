@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Store, provideStore } from '@ngrx/store';
+import 'rxjs/add/operator/map';
 import { id } from '../id';
 import {
     ADD_PERSON,
@@ -8,6 +9,7 @@ import {
     REMOVE_GUEST,
     TOGGLE_ATTENDING
 } from '../actions';
+// import { FilterSelect } from '../components/filter-select.component';
 
 @Component({
     selector: 'app-root',
@@ -17,6 +19,9 @@ import {
 export class AppComponent {
 
     public people;
+    public filter;
+    private attending;
+    private guests;
     private subscription;
 
     constructor(
@@ -39,6 +44,15 @@ export class AppComponent {
             is disposed.
         */
         this.people = _store.select('people');
+        /*
+            this is a naive way to handle projecting state, we will explore a better
+            Rx based solution lower
+        */
+        this.filter = _store.select('partyFilter');
+        this.attending = this.people.map(p => p.filter(person => person.attending));
+        this.guests = this.people
+            .map(p => p.map(person => person.guests)
+                        .reduce((acc, curr) => acc + curr, 0));
     }
 
     // all state-changing actions get dispatched to and handled by reducers
@@ -60,6 +74,10 @@ export class AppComponent {
 
     toggleAttending(id) {
         this._store.dispatch({type: TOGGLE_ATTENDING, payload: id});
+    }
+
+    updateFilter(filter) {
+        this._store.dispatch({type: filter});
     }
 
     /*
