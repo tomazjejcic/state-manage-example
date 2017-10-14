@@ -1,5 +1,5 @@
 ## Issue
-Error thrown on first run. Seems there is an issue with AOT compilation. For now the workaround is just to triger save in texteditor ro rerun.
+Error thrown on first run. Seems there is an issue with AOT compilation. For now the workaround is just to triger save in texteditor to rerun.
 
 ## Development server
 
