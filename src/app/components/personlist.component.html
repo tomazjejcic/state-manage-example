@@ -1,7 +1,8 @@
 <h3>PersonList</h3>
 
 <ul>
-    <li *ngFor="let person of people.filter(filter)"
+    <!-- <li *ngFor="let person of people.filter(filter)" -->
+    <li *ngFor="let person of people"
         [class.attending]="person.attending">
 
         {{ person.name }} - Guests: {{ person.guests }}

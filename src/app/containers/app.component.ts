@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Store, provideStore } from '@ngrx/store';
-import 'rxjs/add/operator/map';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/Rx';
+// import 'rxjs/add/operator/map';
 import { id } from '../id';
+import { people } from '../reducers/people';
 import {
     ADD_PERSON,
     REMOVE_PERSON,
@@ -18,11 +21,13 @@ import {
 })
 export class AppComponent {
 
-    public people;
-    public filter;
-    private attending;
-    private guests;
-    private subscription;
+    public model;
+
+    public people: Observable<any>; // it was complainint without type observable
+    // public filter;
+    // private attending;
+    // private guests;
+    // private subscription;
 
     constructor(
         private _store: Store<any>
@@ -44,15 +49,35 @@ export class AppComponent {
             is disposed.
         */
         this.people = _store.select('people');
+
         /*
             this is a naive way to handle projecting state, we will explore a better
             Rx based solution lower
         */
-        this.filter = _store.select('partyFilter');
-        this.attending = this.people.map(p => p.filter(person => person.attending));
-        this.guests = this.people
-            .map(p => p.map(person => person.guests)
-                        .reduce((acc, curr) => acc + curr, 0));
+        // this.filter = _store.select('partyFilter');
+        // this.attending = this.people.map(p => p.filter(person => person.attending));
+        // this.guests = this.people
+        //     .map(p => p.map(person => person.guests)
+        //                 .reduce((acc, curr) => acc + curr, 0));
+
+        /*
+            Every time people or partyFilter emits, pass the latest
+            value from each into supplied function. We can then calculate
+            and output statistics.
+        */
+        this.model = Observable.combineLatest(
+            // _store.select('people'),
+            this.people,
+            _store.select('partyFilter'),
+            (people, filter) => {
+                return {
+                    total: people.length,
+                    people: people.filter(filter),
+                    attending: people.filter(person => person.attending).length,
+                    guests: people.reduce((acc, curr) => acc + curr.guests, 0)
+                };
+            }
+        );
     }
 
     // all state-changing actions get dispatched to and handled by reducers
