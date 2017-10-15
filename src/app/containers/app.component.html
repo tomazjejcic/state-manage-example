@@ -3,6 +3,10 @@
     <h2>@ngrx/store Party Planner</h2>
 </div>
 
+<button (click)="resetParty()" class="margin-bottom-10">
+    Reset Party
+</button>
+
 <div class="margin-bottom-10">
     Percent Attendance: {{percentAttendance | async}}%
 </div>

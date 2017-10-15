@@ -13,6 +13,7 @@ import { PartyStats } from './components/party-stats.component';
 // Reducers
 import { people } from './reducers/people';
 import { partyFilter } from './reducers/party-filter';
+import { reset, RESET_STATE } from './reducers/reset';
 
 // export const reducers = localStorageSync(['todos']);
 
@@ -26,7 +27,7 @@ import { partyFilter } from './reducers/party-filter';
   ],
   imports: [
     BrowserModule,
-    StoreModule.provideStore({people, partyFilter}),
+    StoreModule.provideStore({people: reset(people), partyFilter}),
     FormsModule
   ],
   providers: [],

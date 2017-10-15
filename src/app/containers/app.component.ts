@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 // import 'rxjs/add/operator/map';
 import { id } from '../id';
 import { people } from '../reducers/people';
+import { RESET_STATE } from '../reducers/reset';
 import { partyModel, percentAttending} from '../selectors';
 import {
     ADD_PERSON,
@@ -111,6 +112,10 @@ export class AppComponent {
 
     updateFilter(filter) {
         this._store.dispatch({type: filter});
+    }
+
+    resetParty() {
+        this._store.dispatch({type: RESET_STATE});
     }
 
     /*
