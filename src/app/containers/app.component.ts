@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 // import 'rxjs/add/operator/map';
 import { id } from '../id';
 import { people } from '../reducers/people';
+import { partyModel, percentAttending} from '../selectors';
 import {
     ADD_PERSON,
     REMOVE_PERSON,
@@ -22,6 +23,7 @@ import {
 export class AppComponent {
 
     public model;
+    public percentAttendance;
 
     public people: Observable<any>; // it was complainint without type observable
     // public filter;
@@ -68,16 +70,22 @@ export class AppComponent {
         this.model = Observable.combineLatest(
             // _store.select('people'),
             this.people,
-            _store.select('partyFilter'),
-            (people, filter) => {
-                return {
-                    total: people.length,
-                    people: people.filter(filter),
-                    attending: people.filter(person => person.attending).length,
-                    guests: people.reduce((acc, curr) => acc + curr.guests, 0)
-                };
-            }
-        );
+            _store.select('partyFilter')
+            )
+            // without selector:
+            // (people, filter) => {
+            //     return {
+            //         total: people.length,
+            //         people: people.filter(filter),
+            //         attending: people.filter(person => person.attending).length,
+            //         guests: people.reduce((acc, curr) => acc + curr.guests, 0)
+            //     };
+            // }
+
+            // extracting party model to selector
+            .let(partyModel());
+        // for demonstration on combining selectors
+        this.percentAttendance = _store.let(percentAttending());
     }
 
     // all state-changing actions get dispatched to and handled by reducers
